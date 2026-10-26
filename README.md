@@ -2,9 +2,16 @@
 
 **Gaming Power** is a minimal, latency-focused Windows power plan for competitive and high-refresh-rate gaming.
 
-It uses the Windows **High performance** personality and adds seven targeted AC-power overrides for aggressive CPU response, Windows latency hints, and reduced USB/storage power-state transitions. The plan does not disable processor idle states.
+It uses the Windows **High performance** personality and adds thirteen targeted AC-power overrides for aggressive CPU response, no core parking, Windows latency hints, and reduced USB/storage power-state transitions, on Intel hybrid CPUs for the P-cores as well. The plan does not disable processor idle states.
 
 Community users have reported a more responsive feel and more consistent host-delivery timing in [AleksMouseTester](https://github.com/moneks1106-code/AleksMouseTester). These reports are encouraging, but they are not proof of a universal end-to-end input-latency reduction. Results depend on the CPU, motherboard, BIOS, chipset drivers, USB controller, mouse, polling rate, workload, and Windows build.
+
+## What's new in v1.1.0
+
+- **Intel hybrid CPUs (12th gen and newer):** Windows keeps separate processor settings for the P-cores (efficiency class 1). v1.0.0 set its processor overrides only for the first class, so on these CPUs the P-cores used whatever Windows or Intel's provisioning supplied. v1.1.0 sets them for the P-cores as well. On CPUs without P- and E-cores, Windows ignores these values: AMD Ryzen and older Intel CPUs behave as with v1.0.0.
+- **Core parking is now off explicitly** (minimum unparked cores 100 %, for both core classes). v1.0.0 left it to the High performance personality.
+
+Thanks to the community member whose core parking report led to this fix.
 
 ## Download
 
@@ -13,7 +20,7 @@ Download [`Gaming-Power.pow`](./Gaming-Power.pow), or use the asset attached to 
 Published SHA-256:
 
 ```text
-82622217CE9490D737F8F548B009F1E19D7220DC0FB02E3CE72F33C3429D1D44
+9B52276AE19AECB20E8970E84372BF166D690955F95DD33B607272DE5E854367
 ```
 
 The same value is available in [`SHA256SUMS.txt`](./SHA256SUMS.txt).
@@ -30,6 +37,8 @@ Gaming Power is intended for desktop testing on:
 The primary reference system is an AMD Ryzen 7 9800X3D on an AM5 platform. AM4 and Intel results are especially welcome. Windows 10 may import the plan, but it is not a primary validation target and may ignore unsupported settings.
 
 This is an aggressive **AC/desktop** profile. It is not recommended as a general-purpose laptop or battery plan.
+
+**Ryzen X3D with two CCDs** (7900X3D, 7950X3D, 9900X3D, 9950X3D): AMD's chipset driver normally parks the CCD without 3D V-Cache while a game runs. With Gaming Power all cores stay unparked; games are still steered to the V-Cache CCD through AMD's preferred-core ranking, but not strictly. If a game runs worse for you, please report it in the Issues. Single-CCD X3D CPUs (7800X3D, 9800X3D) are not affected.
 
 ## Installation
 
@@ -55,6 +64,14 @@ This is an aggressive **AC/desktop** profile. It is not recommended as a general
 
 You can also activate the imported plan from Windows Power Options.
 
+## Updating from v1.0.0
+
+An imported plan does not update itself. To update:
+
+1. Import the new `Gaming-Power.pow` as above. `powercfg /list` then shows two plans named `Gaming Power`.
+2. Activate the new one with `powercfg /setactive <NEW_GUID>`.
+3. Delete the old one, the one without the `*`: `powercfg /delete <OLD_GUID>`.
+
 ## Restore or uninstall
 
 Switch back to Balanced before deleting Gaming Power:
@@ -69,7 +86,7 @@ Only delete the GUID shown next to `Gaming Power` on your own system.
 
 ## Technical profile
 
-The `.pow` file is deliberately small and contains only these seven explicit AC overrides:
+The `.pow` file is deliberately small and contains only these explicit AC overrides. The five processor settings are set twice, for both core classes: on an Intel hybrid CPU the second copy applies to the P-cores, elsewhere Windows ignores it.
 
 | Setting | AC value | Intent / trade-off |
 | --- | ---: | --- |
@@ -77,13 +94,14 @@ The `.pow` file is deliberately small and contains only these seven explicit AC 
 | Processor energy performance preference (EPP) | 0 | Favors performance over efficiency |
 | Performance on latency sensitivity hint | 100% | Requests maximum performance for supported Windows latency hints |
 | EPP on latency sensitivity hint | 0 | Favors performance while a supported latency hint is active |
+| Core parking minimum cores | 100% | No core parking: every core stays unparked; on dual-CCD X3D see Compatibility |
 | USB selective suspend | Disabled | Avoids USB idle suspend/resume transitions; increases idle power |
 | USB 3 link power management | Off | Avoids USB 3 U1/U2 link transitions; applies only to relevant links |
 | Disk idle timeout | Never | Avoids disk spin-down or idle timeout transitions on AC |
 
 The plan does **not** disable processor idle states, install software, change HPET/BCD timer options, modify mouse queue sizes, change USB polling rate, or alter mouse sensitivity.
 
-Because the file uses the High performance personality, settings not explicitly included in the file are supplied by Windows and platform-specific provisioning. Effective values can therefore differ between AMD and Intel systems or between Windows builds.
+Because the file uses the High performance personality, settings not explicitly included in the file are supplied by Windows and platform-specific provisioning. Effective values can therefore differ between AMD and Intel systems or between Windows builds. The overrides above are explicit for both core classes since v1.1.0, so they no longer depend on that provisioning.
 
 ## What AleksMouseTester can and cannot show
 
