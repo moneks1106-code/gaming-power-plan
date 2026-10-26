@@ -4,7 +4,7 @@
 
 It uses the Windows **High performance** personality and adds thirteen targeted AC-power overrides for aggressive CPU response, no core parking, Windows latency hints, and reduced USB/storage power-state transitions, on Intel hybrid CPUs for the P-cores as well. The plan does not disable processor idle states.
 
-Community users have reported a more responsive feel and more consistent host-delivery timing in [AleksMouseTester](https://github.com/moneks1106-code/AleksMouseTester). These reports are encouraging, but they are not proof of a universal end-to-end input-latency reduction. Results depend on the CPU, motherboard, BIOS, chipset drivers, USB controller, mouse, polling rate, workload, and Windows build.
+Community users have reported a more responsive feel and more consistent host-delivery timing in [InputLab](https://github.com/moneks1106-code/InputLab) (formerly AleksMouseTester). These reports are encouraging, but they are not proof of a universal end-to-end input-latency reduction. Results depend on the CPU, motherboard, BIOS, chipset drivers, USB controller, mouse, polling rate, workload, and Windows build.
 
 ## What's new in v1.1.0
 
@@ -103,9 +103,9 @@ The plan does **not** disable processor idle states, install software, change HP
 
 Because the file uses the High performance personality, settings not explicitly included in the file are supplied by Windows and platform-specific provisioning. Effective values can therefore differ between AMD and Intel systems or between Windows builds. The overrides above are explicit for both core classes since v1.1.0, so they no longer depend on that provisioning.
 
-## What AleksMouseTester can and cannot show
+## What InputLab can and cannot show
 
-[AleksMouseTester](https://github.com/moneks1106-code/AleksMouseTester) is useful for examining how evenly mouse input is delivered to the Windows host. It does not directly measure full click-to-photon latency, game-engine latency, display latency, or total system input lag.
+[InputLab](https://github.com/moneks1106-code/InputLab) (formerly AleksMouseTester) is useful for examining how evenly mouse input is delivered to the Windows host. It does not directly measure full click-to-photon latency, game-engine latency, display latency, or total system input lag.
 
 A cleaner polling graph is useful evidence about report consistency, but it should not be presented by itself as proof that the complete input path became faster.
 
