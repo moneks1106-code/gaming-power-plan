@@ -6,6 +6,8 @@ It uses the Windows **High performance** personality and adds thirteen targeted 
 
 Community users have reported a more responsive feel and more consistent host-delivery timing in [InputLab](https://github.com/moneks1106-code/InputLab) (formerly AleksMouseTester). These reports are encouraging, but they are not proof of a universal end-to-end input-latency reduction. Results depend on the CPU, motherboard, BIOS, chipset drivers, USB controller, mouse, polling rate, workload, and Windows build.
 
+Questions, results and feedback: join the [InputLab Discord](https://discord.gg/3kEktvD4zm).
+
 ## What's new in v1.1.0
 
 - **Intel hybrid CPUs (12th gen and newer):** Windows keeps separate processor settings for the P-cores (efficiency class 1). v1.0.0 set its processor overrides only for the first class, so on these CPUs the P-cores used whatever Windows or Intel's provisioning supplied. v1.1.0 sets them for the P-cores as well. On CPUs without P- and E-cores, Windows ignores these values: AMD Ryzen and older Intel CPUs behave as with v1.0.0.
