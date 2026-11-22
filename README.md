@@ -34,7 +34,7 @@ Download [`Gaming-Power.pow`](./Gaming-Power.pow), or use the asset attached to 
 Published SHA-256:
 
 ```text
-437BD6D9127DFEB51F8AA42E5E82A3CBC1DE08144780D9C29159A3C38BC9967C
+0BBC03EB0DFCA75DAE1EA89B8CAEE92741AE379B9349EB8A913A6DB33C3105B1
 ```
 
 The same value is available in [`SHA256SUMS.txt`](./SHA256SUMS.txt).
